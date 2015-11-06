@@ -14,6 +14,8 @@
 		public var ghostVector: Vector .<ghost> = new Vector.<ghost>();
 		//public var PacMan:player;
 		
+		public var directionPointer: pointer;
+		
 		public var voiceLevel: MovieClip;
 		
 		public var arduinoConnection: MovieClip;
@@ -21,12 +23,16 @@
 		public function main() {
 			// constructor code
 
+			createPointer();
+			
 			setupPlayer();
 
 			createLadder();
 			createSnake();
 
 			setupGhost();
+			
+
 			
 			//voiceLevel = new voiceDetector (this) as MovieClip;
 			arduinoConnection = new arduino();
@@ -45,7 +51,7 @@
 
 		
 		public function setupPlayer() {
-			PACMAN = new player(this);
+			PACMAN = new player(this, directionPointer);
 			stage.addEventListener(KeyboardEvent.KEY_DOWN, PACMAN.changeDirection);
 			
 			stage.addChild(PACMAN);
@@ -91,6 +97,11 @@
 			stage.addChild(pink);
 			//pink.distWithPlayer();
 		}
+		
+		public function createPointer(): void {
+			directionPointer = new pointer(960, 320);
+			directionPointer.gotoAndStop(1);
+			stage.addChild(directionPointer);
+		}
 	}
-
 }
