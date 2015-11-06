@@ -15,6 +15,8 @@
 		//public var PacMan:player;
 		
 		public var voiceLevel: MovieClip;
+		
+		public var arduinoConnection: MovieClip;
 
 		public function main() {
 			// constructor code
@@ -26,7 +28,10 @@
 
 			setupGhost();
 			
-			voiceLevel = new voiceDetector (this) as MovieClip;
+			//voiceLevel = new voiceDetector (this) as MovieClip;
+			arduinoConnection = new arduino();
+			stage.addChild(arduinoConnection);
+			
 			
 			
 			
