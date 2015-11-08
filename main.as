@@ -35,7 +35,7 @@
 
 			
 			//voiceLevel = new voiceDetector (this) as MovieClip;
-			arduinoConnection = new arduino();
+			arduinoConnection = new arduino(this);
 			stage.addChild(arduinoConnection);
 			
 			

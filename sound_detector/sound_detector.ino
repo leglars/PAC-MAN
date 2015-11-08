@@ -7,7 +7,8 @@ void setup() {
 
 void loop() {
   Serial.println(analogRead(splSensor1), DEC);
+  Serial.println("#");
   Serial.println(analogRead(splSensor2), DEC);
   Serial.println("$");
-  delay(1000);  // delay to avoid overloading the serial port buffer
+  delay(200);  // delay to avoid overloading the serial port buffer
 }

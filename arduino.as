@@ -15,13 +15,22 @@
 	public class arduino extends MovieClip {
 
 		private static const dataend: String = "$"; //定义一个结束字符，注意与arduino上一样
+		private static const dataSeparation: String = "#";
 		private var _socket: Socket;
 		private var _proxyAddress: String = "127.0.0.1";
 		private var _proxyPort: uint = 5333;
+		
+		public var documentClass;
+		
+		public var g:ghost;
+		
+		public var screamingLevel:int = 1;
 
-		public function arduino() {
+		public function arduino(docClass) {
 			// constructor code
 
+			this.documentClass = docClass;
+			
 			this.addEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
 		}
 
@@ -51,12 +60,36 @@
 			var index: int; //一个整形变量index来读取结束字符在buffer字符串中的位置
 			while ((index = buffer.indexOf(dataend)) > -1) //如果读到了结束字符，也就是"$"
 			{
+				
 				msg = buffer.substring(0, index); //msg就等于去掉了“$”后的字符串
+				var space = msg.indexOf(dataSeparation);
+				var value1 = msg.substring(2, space-1);
+				var value2 = msg.substring(space+3, index-1);
 				buffer = buffer.substring(index + 1); //另buffer等于结束字符串的后一位，以便下一个字符串的接受
-				trace("Message Received from Arduino : " + msg); //测试时候用，输出以下msg的值
+				//trace("Value1: " + value1 + "Value2: " + value2); //测试时候用，输出以下msg的值
 				//下面我们让它显示在文本框中  
+				var volumnLevel1 = Number(value1);
+				var volumnLevel2 = Number(value2);
+				
+				screamGhost(volumnLevel1, volumnLevel2);
+				
 			}
 		}
+		
+		public function screamGhost(value1, value2) {
+			if (value1 > 100 * this.screamingLevel || value2 > 100 * this.screamingLevel) {
+				for each ( g in documentClass.ghostVector) {
+					if (g.distanceWithPlayer() < 50 ) {
+						g.runAway();
+						this.screamingLevel++;
+						trace("next volumn should over: " + 100*this.screamingLevel);
+					};
+				}
+			}
+		}
+		
+		
+		
 		//下面定义关掉arduino时，显示Socket Closed
 		private function onClose(event: Event): void {
 			trace("Socket Closed");
